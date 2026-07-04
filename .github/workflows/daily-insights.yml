@@ -1,0 +1,27 @@
+name: Generate Daily EdTech Insights
+on:
+  schedule:
+    - cron: '30 3 * * *'  # ~9:00 AM IST daily
+  workflow_dispatch: {}
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      - run: node scripts/generateInsights.js
+        env:
+          APOLLO_API_KEY: ${{ secrets.APOLLO_API_KEY }}
+          APOLLO_ENRICH_TOP_N: 10
+          GOOGLE_SERVICE_ACCOUNT_EMAIL: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_EMAIL }}
+          GOOGLE_PRIVATE_KEY: ${{ secrets.GOOGLE_PRIVATE_KEY }}
+          GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+      - run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add data/latest.json
+          git commit -m "Daily insights update $(date -u +%Y-%m-%d)" || echo "No changes"
+          git push

@@ -1,0 +1,19 @@
+{
+  "name": "edtech-daily-insights",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "generate": "node scripts/generateInsights.js"
+  },
+  "dependencies": {
+    "next": "14.2.5",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "rss-parser": "^3.13.0",
+    "googleapis": "^140.0.1",
+    "node-fetch": "^3.3.2"
+  }
+}
